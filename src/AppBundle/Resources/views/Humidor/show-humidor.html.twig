@@ -1,0 +1,91 @@
+{% extends ':default:layout.html.twig' %}
+
+{% block title %}
+    Your Humidor
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body{
+            background-image:url({{ asset('images/humidor_page/cedar.jpg') }});
+        }
+        #vr-main{
+            position:relative;
+        }
+        #vr-outer{
+            width:960px;
+            display:block;
+            margin:300px auto;
+            height:600px;
+
+            box-shadow: black 0px 50px 70px 4px;
+            -webkit-box-shadow: black 0px 50px 70px 4px;
+            -o-box-shadow: black 0px 50px 70px 4px;
+            -moz-box-shadow: black 0px 50px 70px 4px;
+            border-radius:20px;
+        }
+        #droppable-zone{
+            background-color: red;
+            opacity: .15;
+            width:800px;
+            height:500px;
+            position:absolute;
+            display:block;
+            top:30px;
+        }
+        .slot{
+            width:12%;
+            border: black inset 5px;
+            position:relative;
+            display: inline-block;
+            margin:0;
+            padding:0;
+            height:500px;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+            adjustDroppableZone();  //lets go ahead and place the droppable zone overtop of our humidor
+            $(window).resize(function(){ adjustDroppableZone()});    //if the windows resized, our droppable zone needs readjusting according to the offset of the humidor
+
+
+
+        });
+
+        function adjustDroppableZone(){
+            var h_offset = $('#vr-outer').offset();
+            var h_left = h_offset.left;   //our humidors offset from left of screen
+            $('#droppable-zone').css("left", h_left + 65 + 'px');  //make sure our droppable zone has same offset with proper tweaking
+        }
+
+        $(".cigar-selector").select2({
+            ajax: {
+                url: "https://api.github.com/search/repositories",
+                dataType: 'json',
+                delay: 250,
+            }
+        });
+    </script>
+
+{% endblock %}
+
+{% block content %}
+<div class="" id="vr-main">
+    {#<div id="vr-outer"></div>#}
+    <div id="droppable-zone">
+        <div id="slot1" class="slot"></div>
+        <div id="slot2" class="slot"></div>
+        <div id="slot3" class="slot"></div>
+        <div id="slot4" class="slot"></div>
+        <div id="slot5" class="slot"></div>
+        <div id="slot6" class="slot"></div>
+        <div id="slot7" class="slot"></div>
+        <div id="slot8" class="slot"></div>
+    </div>
+    <img id="vr-outer" src="{{ asset('images/humidor_page/humidor_edited.png') }}">
+    <div></div>
+</div>
+{% endblock %}

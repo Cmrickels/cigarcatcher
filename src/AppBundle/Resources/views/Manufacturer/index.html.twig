@@ -1,0 +1,27 @@
+{% extends ':admin-base.html.twig' %}
+
+{% block title %}
+    Manufacturer Creation
+{% endblock %}
+
+{% block styles %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {{ form_widget(form.name) }}
+        </div>
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

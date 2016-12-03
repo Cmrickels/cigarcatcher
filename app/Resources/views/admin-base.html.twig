@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body>
+{#<span class="glyphicon glyphicon-search col-md-12" style="font-size:35px;opacity:.5;padding:25px 50px; hover"></span>#}
+<div class="col-md-2"></div><h2>{% block headtitle %}{% endblock %}</h2>
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>
