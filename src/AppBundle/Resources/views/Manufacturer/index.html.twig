@@ -1,11 +1,13 @@
-{% extends ':admin-base.html.twig' %}
+{% extends 'admin-base.html.twig' %}
 
 {% block title %}
-    Manufacturer Creation
+    Manufacturer List
 {% endblock %}
 
-{% block styles %}
+{% block stylesheets %}
     <style>
+
+
 
     </style>
 {% endblock %}
@@ -14,14 +16,36 @@
 {% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-    <div class="row">
-
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            {{ form_widget(form.name) }}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"><h2>Manufacturers</h2></div>
         </div>
-
+        <div class="row">
+            <input type="button" class="btn pull-right btn-default" onclick="location.href = '{{ path('size_new') }}'" value="Create new size">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for manufacturer in manufacturers %}
+                    <tr>
+                        <td>{{ size.id }}</td>
+                        <td>{{ size.name }}</td>
+                        <td>{{ size.description }}</td>
+                        <td><img style="max-height:150px;" src="{{ asset('uploads/size/' ~ manufacturer.image) }}"></td>
+                        <td><a href="{{ path('sizer_index_delete', {'id' : manufacturer.id}) }}" class="btn btn-danger">Delete</a></td>
+                        <td><a href="{{ path('size_edit', {'id' : manufacturer.id} ) }}" class="btn btn-default">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    {{ form_end(form) }}
+
 {% endblock %}

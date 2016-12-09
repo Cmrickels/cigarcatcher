@@ -1,0 +1,51 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block title %}
+    Shape List
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"><h2>Shape List</h2></div>
+        </div>
+        <div class="row">
+            <input type="button" class="btn pull-right btn-default" onclick="location.href = '{{ path('shape_new') }}'" value="Create new shape">
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for shape in shapes %}
+                <tr>
+                    <td>{{ shape.id }}</td>
+                    <td>{{ shape.name }}</td>
+                    <td>{{ shape.description }}</td>
+                    <td><img style="max-height:150px;" src="{{ asset('uploads/manufacturer/' ~ shape.image) }}"></td>
+                    <td><a href="{{ path('shape_index_delete', {'id' : shape.id}) }}" class="btn btn-danger">Delete</a></td>
+                    <td><a href="{{ path('shape_edit', {'id' : shape.id} ) }}" class="btn btn-default">Edit</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

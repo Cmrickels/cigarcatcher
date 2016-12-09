@@ -1,31 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Manufacturer</h1>
+    <h1>Shape</h1>
 
     <table>
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ manufacturer.id }}</td>
+                <td>{{ shape.id }}</td>
             </tr>
             <tr>
                 <th>Name</th>
-                <td>{{ manufacturer.name }}</td>
+                <td>{{ shape.name }}</td>
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ manufacturer.description }}</td>
+                <td>{{ shape.description }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ shape.image }}</td>
             </tr>
         </tbody>
     </table>
 
     <ul>
         <li>
-            <a href="{{ path('manufacturer_index') }}">Back to the list</a>
+            <a href="{{ path('shape_index') }}">Back to the list</a>
         </li>
         <li>
-            <a href="{{ path('manufacturer_edit', { 'id': manufacturer.id }) }}">Edit</a>
+            <a href="{{ path('shape_edit', { 'id': shape.id }) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}

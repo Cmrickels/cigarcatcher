@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Manufacturer;
+use AppBundle\Form\ManufacturerType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +25,9 @@ class ManufacturerController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $manufacturers = $em->getRepository('AppBundle:Manufacturer')->findAll();
+        $manufacturers = $em->getRepository(Manufacturer::class)->findAll();
 
-        return $this->render('manufacturer/index.html.twig', array(
+        return $this->render('AppBundle:Manufacturer:index.html.twig', array(
             'manufacturers' => $manufacturers,
         ));
     }
@@ -40,15 +41,28 @@ class ManufacturerController extends Controller
     public function newAction(Request $request)
     {
         $manufacturer = new Manufacturer();
-        $form = $this->createForm('AppBundle\Form\ManufacturerType', $manufacturer);
+        $form = $this->createForm(ManufacturerType::class, $manufacturer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $file = $manufacturer->getImage();
+
+            // Generate a unique name for the file before saving it
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            $file->move(
+                $this->getParameter('manufacturer_directory'),
+                $fileName
+            );
+
+            $manufacturer->setImage($fileName);
             $em->persist($manufacturer);
             $em->flush($manufacturer);
 
-            return $this->redirectToRoute('manufacturer_show', array('id' => $manufacturer->getId()));
+            return $this->redirectToRoute('manufacturer_index', array('id' => $manufacturer->getId()));
         }
 
         return $this->render('AppBundle:Manufacturer:new.html.twig', array(
@@ -67,7 +81,7 @@ class ManufacturerController extends Controller
     {
         $deleteForm = $this->createDeleteForm($manufacturer);
 
-        return $this->render('manufacturer/show.html.twig', array(
+        return $this->render('AppBundle:Manufacturer:show.html.twig', array(
             'manufacturer' => $manufacturer,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -83,15 +97,31 @@ class ManufacturerController extends Controller
     {
         $deleteForm = $this->createDeleteForm($manufacturer);
         $editForm = $this->createForm('AppBundle\Form\ManufacturerType', $manufacturer);
+        $manu_clone = clone $manufacturer;
+
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+            $file = $manufacturer->getImage();
 
+            // Generate a unique name for the file before saving it
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            $file->move(
+                $this->getParameter('manufacturer_directory'),
+                $fileName
+            );
+
+            $manufacturer->setImage($fileName);
+            $em->persist($manufacturer);
+            $em->flush($manufacturer);
+            unlink('uploads/manufacturer/' . $manu_clone->getImage());
             return $this->redirectToRoute('manufacturer_edit', array('id' => $manufacturer->getId()));
         }
 
-        return $this->render('manufacturer/edit.html.twig', array(
+        return $this->render('AppBundle:Manufacturer:edit.html.twig', array(
             'manufacturer' => $manufacturer,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -132,5 +162,18 @@ class ManufacturerController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @param Manufacturer $manufacturer
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/delete/{id}", name="manufacturer_index_delete")
+     */
+    public function deleteIndexAction(Manufacturer $manufacturer){
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($manufacturer);
+        $em->flush();
+        unlink('uploads/manufacturer/' . $manufacturer->getImage());
+        return $this->redirectToRoute('manufacturer_index');
     }
 }

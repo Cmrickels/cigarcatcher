@@ -12,6 +12,8 @@ fos_user:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    manufacturer_directory: '%kernel.root_dir%/../web/uploads/manufacturer'
+    shape_directory: '%kernel.root_dir%/../web/uploads/shape'
 
 framework:
     #esi:             ~

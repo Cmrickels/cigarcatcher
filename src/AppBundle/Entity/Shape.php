@@ -41,6 +41,12 @@ class Shape
     private $cigars;
 
     /**
+     * @ORM\Column(type="string")
+     *
+     */
+    private $image;
+
+    /**
      * Get id
      *
      * @return int
@@ -137,5 +143,21 @@ class Shape
     public function getCigars()
     {
         return $this->cigars;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
     }
 }

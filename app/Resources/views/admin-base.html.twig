@@ -4,14 +4,50 @@
     <meta charset="UTF-8" />
     <title>{% block title %}{% endblock %}</title>
     {% block stylesheets %}{% endblock %}
+    <style>
+        /*******************/
+        input[type="file"]{
+            border:none;
+            box-shadow: none;
+        }
+    </style>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" ></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
+
 </head>
 <body>
-{#<span class="glyphicon glyphicon-search col-md-12" style="font-size:35px;opacity:.5;padding:25px 50px; hover"></span>#}
-<div class="col-md-2"></div><h2>{% block headtitle %}{% endblock %}</h2>
+<nav class="navbar navbar-inverse" id="main-nav">
+    <div class="container-fluid" ng-app="firstApplication">
+        <ul class="nav navbar-nav" ng-controller="autoCompleteController as ctrl">
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manufacturer <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ path('manufacturer_new') }}">New</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ path('manufacturer_index') }}">List</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shape <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ path('shape_new') }}">New</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ path('shape_index') }}">List</a></li>
+                </ul>
+            </li>
+            <li><a href="">Manufacturers</a></li>
+        </ul>
+    </div>
+</nav>
 {% block body %}{% endblock %}
 {% block javascripts %}{% endblock %}
 </body>

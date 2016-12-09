@@ -82,7 +82,6 @@ class Cigar
      */
     private $shape;
 
-
     /**
      * Get id
      *

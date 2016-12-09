@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Tests\Validator\Constraints as Assert;
 /**
  * Manufacturer
  *
@@ -39,6 +39,12 @@ class Manufacturer
      * @ORM\OneToMany(targetEntity="Cigar", mappedBy="manufacturer")
      */
     private $cigars;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     */
+    private $image;
 
     /**
      * Get id
@@ -137,5 +143,21 @@ class Manufacturer
     public function getCigars()
     {
         return $this->cigars;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
     }
 }
