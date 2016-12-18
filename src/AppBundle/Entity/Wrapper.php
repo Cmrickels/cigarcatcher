@@ -36,6 +36,13 @@ class Wrapper
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="color", type="text")
+     */
+    private $color;
+
+    /**
      * @ORM\OneToMany(targetEntity="Cigar", mappedBy="wrapper")
      */
     private $cigars;
@@ -138,4 +145,22 @@ class Wrapper
     {
         return $this->cigars;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param mixed $color
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+    }
+
+
 }

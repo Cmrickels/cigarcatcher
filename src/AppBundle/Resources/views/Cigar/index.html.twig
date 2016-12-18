@@ -1,0 +1,64 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block title %}
+    Cigar List
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"><h2>Cigars</h2></div>
+        </div>
+        <div class="row">
+            <input type="button" class="btn pull-right btn-default" onclick="location.href = '{{ path('cigar_new') }}'" value="Create new size">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Gauge</th>
+                    <th>Body</th>
+                    <th>Wrapper Country</th>
+                    <th>Version</th>
+                    <th>Description</th>
+                    <th>Filler Country</th>
+                    <th>Manufacturer</th>
+                    <th>Wrapper Type</th>
+                    <th>Shape Type</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cigar in cigars %}
+                    <tr>
+                        <td>{{ cigar.id }}</td>
+                        <td>{{ cigar.gauge }}</td>
+                        <td>{{ cigar.body }}</td>
+                        <td>{{ cigar.wrapperCountry }}</td>
+                        <td>{{ cigar.variant }}</td>
+                        <td>{{ cigar.description }}</td>
+                        <td>{{ cigar.fillerCountry }}</td>
+                        <td>{{ cigar.manufacturer.name }}</td>
+                        <td>{{ cigar.wrapper.name }}</td>
+                        <td>{{ cigar.shape.name }}</td>
+                        <td><img style="max-height:150px;" src="{{ asset('uploads/cigar/' ~ cigar.image) }}"></td>
+                        <td><a href="{{ path('cigar_index_delete', {'id' : cigar.id}) }}" class="btn btn-danger">Delete</a></td>
+                        <td><a href="{{ path('cigar_edit', {'id' : cigar.id} ) }}" class="btn btn-default">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

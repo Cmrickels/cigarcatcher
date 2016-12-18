@@ -18,7 +18,7 @@ class ManufacturerType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
-            ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
+            ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control tinymce'), 'required' => true))
             ->add('image', FileType::class, array('attr' => array('class' => 'form-control'), 'required' => true, 'data_class' => null));
     }
     

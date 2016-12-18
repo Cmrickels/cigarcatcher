@@ -1,7 +1,7 @@
 {% extends 'admin-base.html.twig' %}
 
 {% block title %}
-    Shape Creation
+    Wrapper Creation
 {% endblock %}
 
 {% block styles %}
@@ -25,7 +25,7 @@
             }
         }
 
-        $("#appbundle_shape_image").change(function(){
+        $("#appbundle_wrapper_image").change(function(){
             readURL(this);
         });
 
@@ -34,10 +34,10 @@
 
 {% block body %}
     <div class="container">
-        <a href="{{ path('shape_index') }}"><- Back to list</a>
+        <a href="{{ path('wrapper_index') }}"><- Back to list</a>
 
         <div class="row">
-            <div class="col-md-6"><h2>New Shape</h2></div>
+            <div class="col-md-6"><h2>New Wrapper</h2></div>
         </div>
         {{ form_start(form) }}
         {#<div class="col-md-2"></div>#}
@@ -47,8 +47,8 @@
                 {{ form_widget(form.name) }}
             </div>
             <div class="col-md-6">
-                {{ form_label(form.image) }}
-                {{ form_widget(form.image) }}
+                {{ form_label(form.color) }}
+                {{ form_widget(form.color) }}
             </div>
         </div>
         <div class="row">

@@ -10,9 +10,17 @@ use Doctrine\ORM\Mapping\JoinColumn;
  *
  * @ORM\Table(name="cigar")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CigarRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Cigar
 {
+    /**
+     * @ORM\PrePersist()
+     */
+    public function onPrePersist(){
+        $this->setName($this->getManufacturer()->getName() . " " . $this->getVariant());
+    }
+
     /**
      * @var int
      *
@@ -81,6 +89,18 @@ class Cigar
      * @JoinColumn(name="shape_id", referencedColumnName="id")
      */
     private $shape;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     */
+    private $image;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $name;
 
     /**
      * Get id
@@ -307,4 +327,39 @@ class Cigar
     {
         return $this->shape;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+
+
 }

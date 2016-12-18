@@ -1,0 +1,51 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block title %}
+    Wrapper List
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"><h2>Wrapper List</h2></div>
+        </div>
+        <div class="row">
+            <input type="button" class="btn pull-right btn-default" onclick="location.href = '{{ path('wrapper_new') }}'" value="Create new wrapper">
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Color</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for wrapper in wrappers %}
+                <tr>
+                    <td>{{ wrapper.id }}</td>
+                    <td>{{ wrapper.name }}</td>
+                    <td>{{ wrapper.description | raw}}</td>
+                    <td>{{ wrapper.color }}</td>
+                    <td><a href="{{ path('wrapper_index_delete', {'id' : wrapper.id}) }}" class="btn btn-danger">Delete</a></td>
+                    <td><a href="{{ path('wrapper_edit', {'id' : wrapper.id} ) }}" class="btn btn-default">Edit</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

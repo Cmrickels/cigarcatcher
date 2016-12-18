@@ -39,7 +39,7 @@
                     <td>{{ shape.id }}</td>
                     <td>{{ shape.name }}</td>
                     <td>{{ shape.description }}</td>
-                    <td><img style="max-height:150px;" src="{{ asset('uploads/manufacturer/' ~ shape.image) }}"></td>
+                    <td><img style="max-height:150px;" src="{{ asset('uploads/shape/' ~ shape.image) }}"></td>
                     <td><a href="{{ path('shape_index_delete', {'id' : shape.id}) }}" class="btn btn-danger">Delete</a></td>
                     <td><a href="{{ path('shape_edit', {'id' : shape.id} ) }}" class="btn btn-default">Edit</a></td>
                 </tr>

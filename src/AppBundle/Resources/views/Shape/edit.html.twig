@@ -1,21 +1,68 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin-base.html.twig' %}
+
+{% block title %}
+    Shape Edit
+{% endblock %}
+
+{% block styles %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#upload-image-holder').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#appbundle_shape_image").change(function(){
+            readURL(this);
+        });
+
+
+
+    </script>
+{% endblock %}
 
 {% block body %}
-    <h1>Shape edit</h1>
+    <div class="container">
+        <a href="{{ path('shape_index') }}"><- Back to list</a>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('shape_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        <div class="row">
+            <div class="col-md-6"><h2>Edit Shape</h2></div>
+        </div>
+        {{ form_start(edit_form) }}
+        {#<div class="col-md-2"></div>#}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_label(edit_form.name) }}
+                    {{ form_widget(edit_form.name) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label(edit_form.image) }}
+                    {{ form_widget(edit_form.image) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_label(edit_form.description) }}
+                    {{ form_widget(edit_form.description) }}
+                </div>
+                <div class="col-md-3">
+                    <img style="max-height:150px;" id="upload-image-holder" src="">
+                </div>
+            <button type="submit" class="btn success" style="margin-top:10px;">Create</button>
+        </div>
+        {{ form_end(edit_form) }}
+    </div>
 {% endblock %}

@@ -21,13 +21,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    <script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
-
 </head>
 <body>
 <nav class="navbar navbar-inverse" id="main-nav">
     <div class="container-fluid" ng-app="firstApplication">
         <ul class="nav navbar-nav" ng-controller="autoCompleteController as ctrl">
+            <li><a href="{{ path('fos_user_security_login') }}">Site</a></li>
             <li>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manufacturer <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -44,11 +43,27 @@
                     <li><a href="{{ path('shape_index') }}">List</a></li>
                 </ul>
             </li>
-            <li><a href="">Manufacturers</a></li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wrapper <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ path('wrapper_new') }}">New</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ path('wrapper_index') }}">List</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cigar <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ path('cigar_new') }}">New</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ path('cigar_index') }}">List</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>
 {% block body %}{% endblock %}
 {% block javascripts %}{% endblock %}
+{{ tinymce_init() }}
 </body>
 </html>

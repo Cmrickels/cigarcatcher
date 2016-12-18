@@ -21,8 +21,8 @@
             <div class="col-md-2"><h2>Manufacturers</h2></div>
         </div>
         <div class="row">
-            <input type="button" class="btn pull-right btn-default" onclick="location.href = '{{ path('size_new') }}'" value="Create new size">
-        </div>
+            <input type="button" class="btn pull-right btn-default" onclick="location.href = '{{ path('manufacturer_new') }}'" value="Create new size">
+        </div>size_new
         <table class="table">
             <thead>
                 <tr>
@@ -36,12 +36,12 @@
             <tbody>
                 {% for manufacturer in manufacturers %}
                     <tr>
-                        <td>{{ size.id }}</td>
-                        <td>{{ size.name }}</td>
-                        <td>{{ size.description }}</td>
-                        <td><img style="max-height:150px;" src="{{ asset('uploads/size/' ~ manufacturer.image) }}"></td>
-                        <td><a href="{{ path('sizer_index_delete', {'id' : manufacturer.id}) }}" class="btn btn-danger">Delete</a></td>
-                        <td><a href="{{ path('size_edit', {'id' : manufacturer.id} ) }}" class="btn btn-default">Edit</a></td>
+                        <td>{{ manufacturer.id }}</td>
+                        <td>{{ manufacturer.name }}</td>
+                        <td>{{ manufacturer.description }}</td>
+                        <td><img style="max-height:150px;" src="{{ asset('uploads/manufacturer/' ~ manufacturer.image) }}"></td>
+                        <td><a href="{{ path('manufacturer_index_delete', {'id' : manufacturer.id}) }}" class="btn btn-danger">Delete</a></td>
+                        <td><a href="{{ path('manufacturer_edit', {'id' : manufacturer.id} ) }}" class="btn btn-default">Edit</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

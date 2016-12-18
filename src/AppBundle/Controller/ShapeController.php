@@ -62,7 +62,7 @@ class ShapeController extends Controller
             $em->persist($shape);
             $em->flush($shape);
 
-            return $this->redirectToRoute('shape_show', array('id' => $shape->getId()));
+            return $this->redirectToRoute('shape_index', array('id' => $shape->getId()));
         }
 
         return $this->render('AppBundle:Shape:new.html.twig', array(
@@ -117,7 +117,7 @@ class ShapeController extends Controller
 
             $em->persist($shape);
             $em->flush($shape);
-            unlink('uploads/shape/' . $shape->getImage());
+            unlink('uploads/shape/' . $shape_clone      ->getImage());
 
             return $this->redirectToRoute('shape_edit', array('id' => $shape->getId()));
         }
@@ -168,7 +168,7 @@ class ShapeController extends Controller
     /**
      * @param Size $size
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("/delete/{id}", name="manufacturer_index_delete")
+     * @Route("/delete/{id}", name="shape_index_delete")
      */
     public function deleteIndexAction(Shape $shape){
         $em = $this->getDoctrine()->getManager();
