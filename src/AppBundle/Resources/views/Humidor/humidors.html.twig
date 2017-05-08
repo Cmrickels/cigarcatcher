@@ -1,0 +1,112 @@
+{% extends ':default:layout.html.twig' %}
+
+{% block title %}
+    Humidor Selection
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .humidor-cell:hover{
+            cursor:pointer;
+
+        }
+
+        .humidor-cell{
+            margin-top:30px;
+        }
+
+        .page-container{
+            margin-top:75px;
+        }
+
+        body{
+            background-image:url({{ asset('images/humidor_page/cedar.jpg') }});
+        }
+
+        #add-button{
+            position:fixed;
+            right:10px;
+            bottom: 60px;
+            background-color:grey;
+            width:100px;
+            height:100px;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function createHumidor(hn){
+            $.ajax({
+                method: "GET",
+                url: "{{ path('create-humidor') }}",
+                data: {humidorName : hn},
+                success: function(data) {
+                    if(data == 'success'){
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+    </script>
+
+{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+
+        <button data-toggle="modal" data-target="#myModal" id="add-button" style="" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+            <i class="material-icons">add</i>
+        </button>
+
+        {% for humidor in user.humidors %}
+        <a href="{{ path('humidor', {'humidorId': humidor.id}) }}">
+        <div class="col-md-4 humidor-cell">
+            <div class="demo-card-wide mdl-card mdl-shadow--2dp"  style="margin:0 auto">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">{% if humidor.name is not null and humidor.name != '' %}{{ humidor.name }}{% else %}Unnamed{% endif %}</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    Description about your unique and respected box of cigars from their first taste to the wrapper's undernotes
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        Edit
+                    </a>
+                </div>
+                <div class="mdl-card__menu">
+                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                        <i class="material-icons">share</i>
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+        </a>
+        {%  endfor %}
+    </div>
+
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="humidor-name">Humidor Name:</label>
+                        <input type="text" class="form-control" id="humidor-name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="createHumidor($('#humidor-name').val())">Create</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

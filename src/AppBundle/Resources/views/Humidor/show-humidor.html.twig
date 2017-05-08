@@ -13,34 +13,41 @@
             position:relative;
         }
         #vr-outer{
-            width:960px;
+            /*width:960px;*/
+            width:760px;
             display:block;
             margin:300px auto;
-            height:600px;
+            /*height:600px;*/
 
             box-shadow: black 0px 50px 70px 4px;
             -webkit-box-shadow: black 0px 50px 70px 4px;
             -o-box-shadow: black 0px 50px 70px 4px;
             -moz-box-shadow: black 0px 50px 70px 4px;
             border-radius:20px;
+
+            z-index:10;
         }
         #droppable-zone{
-            background-color: red;
-            opacity: .15;
-            width:800px;
-            height:500px;
+            /*opacity: .15;*/
+            /*background-color:red;*/
+            width:620px;
+            height:390px;
             position:absolute;
             display:block;
             top:30px;
         }
         .slot{
-            width:12%;
-            border: black inset 5px;
+            width:11.90%;
+            /*width:70px;*/
+            /*border: black inset 5px;*/
             position:relative;
             display: inline-block;
             margin:0;
             padding:0;
-            height:500px;
+            height:390px;
+        }
+        .ddelem{
+            margin: 5px 0;
         }
     </style>
 {% endblock %}
@@ -51,45 +58,102 @@
             adjustDroppableZone();  //lets go ahead and place the droppable zone overtop of our humidor
             $(window).resize(function(){ adjustDroppableZone()});    //if the windows resized, our droppable zone needs readjusting according to the offset of the humidor
 
+            var typingTimer;                //timer identifier
+            var doneTypingInterval = 500;  //time in ms, 5 second for example
+            var $input = $('#search-field');
+
+            $input.on('keyup', function () {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            });
+
+            $input.on('keydown', function () {
+                clearTimeout(typingTimer);
+            });
+
+            $input.on('keyup paste', function(){
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            });
+
+            initDroppables();
+
+            $('search-field').blur(function(){
+
+            });
         });
+
+        function initDroppables(){
+            $('.slot').droppable({
+                drop: function(event, ui) {
+                    var cigarNumber = ui.draggable.attr('id');
+                    var slotNumber = $(this).attr('id');
+
+                    ui.draggable.draggable( 'disable' );
+                    $(this).droppable('disable');
+                    ui.draggable.position( { of: $('#'+ slotNumber), my: 'left top', at: 'left top' } );
+                    ui.draggable.draggable( 'option', 'revert', false );
+//                    console.log($('#'+slotNumber));
+                    $.ajax({
+                        method: "GET",
+                        url: "{{  path('attach-cigar-to-slot') }}",
+                        data: { slotId : slotNumber, cigarId : cigarNumber, humidorId : {{ humidor.id }} },
+                        success: function(data){
+                            window.location.reload();
+                        }
+                    })
+
+                }
+            });
+        }
+
+        function doneTyping () {
+            $.ajax({
+                method: "GET",
+                url: "{{ path('cigar-manual-query') }}",
+                data: { search : $('#search-field').val() },
+                success: function(data){
+                    $('#search-dropdown').empty();
+                    if(data) {
+
+                        for(var i = 0; i < data.length; i++) {
+
+                            var image = data[i].image;
+
+                            $('#search-dropdown').append(
+
+                                "<div id='"+ data[i].id +"' class='ddelem draggable' style='float:right'><img style='max-width:70px;' class='img-fluid' src='http://cigarcatcher.dev/uploads/cigar/" + data[i].image + "'></div>" +
+                                "<h4 class='ddelem'><span class=''>Name:</span> " + data[i].variant + "</h4>" +
+                                "<p class='ddelem'>Manufacturer: " + data[i].manufacturerName + "</p>" +
+                                "<p class='ddelem'>Body: " + data[i].body + "</p>" +
+                                "<p class='ddelem'>Wrapper: " + data[i].wrapperName + "</p>" +
+                                "<p class='ddelem'>Shape: " + data[i].shapeName + "</p>" +
+                                "<p class='ddelem'>Description: " + data[i].description + "</p>"
+
+                            ).slideDown(100);
+                            $('.draggable').draggable({
+                                cursor: 'move',
+                                containment: 'document',
+                                helper: 'clone',
+//                                helper: function(){
+//                                    return "<div class='ddelem draggable' style='float:right'>" +
+//                                        "<img style='max-width:70px;height:390px;' class='img-fluid' src='http://cigarcatcher.dev/uploads/cigar/" + image + "'></div>";
+//                                },
+                                snap: '.slot',
+                                revert: true
+                            });
+
+                        }
+                    }
+                }
+            });
+        }
 
         function adjustDroppableZone(){
             var h_offset = $('#vr-outer').offset();
             var h_left = h_offset.left;   //our humidors offset from left of screen
             $('#droppable-zone').css("left", h_left + 65 + 'px');  //make sure our droppable zone has same offset with proper tweaking
         }
-
-        $('#cigar-selector').select2({
-            ajax: {
-                url: "{{ path('cigar-auto-query') }}",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (data, page) {
-                    // parse the results into the format expected by Select2.
-                    // since we are using custom formatting functions we do not need to
-                    // alter the remote JSON data
-                    return {
-                        results: data.items
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-            minimumInputLength: 1,
-            //templateResult: formatRepo, // omitted for brevity, see the source of this page
-            //templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-            placeholder: {
-                id: '-1', // the value of the option
-                text: 'Select an option'
-            }
-        });
-
     </script>
 
 {% endblock %}
@@ -98,16 +162,80 @@
 <div class="" id="vr-main">
     {#<div id="vr-outer"></div>#}
     <div id="droppable-zone">
-        <div id="slot1" class="slot"></div>
-        <div id="slot2" class="slot"></div>
-        <div id="slot3" class="slot"></div>
-        <div id="slot4" class="slot"></div>
-        <div id="slot5" class="slot"></div>
-        <div id="slot6" class="slot"></div>
-        <div id="slot7" class="slot"></div>
-        <div id="slot8" class="slot"></div>
+        {% if humidor.slot1 is not null %}
+        <div id="slot1" class="slot" style="top:-191px;cursor:pointer" data-toggle="modal" data-target="#cigarmodal">
+            <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot1.image) }}">
+        </div>
+        {% else %}
+            <div id="slot1" class="slot"></div>
+        {% endif %}
+        {% if humidor.slot2 is not null %}
+        <div id="slot2" class="slot" style="top:-191px">
+            <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot2.image) }}">
+        </div>
+        {% else %}
+            <div id="slot2" class="slot"></div>
+        {% endif %}
+        {% if humidor.slot3 is not null %}
+        <div id="slot3" class="slot" style="top:-191px">
+            <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot3.image) }}">
+        </div>
+        {% else %}
+            <div id="slot3" class="slot"></div>
+        {% endif %}
+        {% if humidor.slot4 is not null %}
+        <div id="slot4" class="slot" style="top:-191px">
+            <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot4.image) }}">
+        </div>
+        {% else %}
+            <div id="slot4" class="slot"></div>
+        {% endif %}
+        <div id="slot5" class="slot" {% if humidor.slot5 is not null %}style="top:-191px"{% endif %}>
+            {% if humidor.slot5 is not null %}
+                <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot5.image) }}">
+            {% endif %}
+        </div>
+        <div id="slot6" class="slot" {% if humidor.slot6 is not null %}style="top:-191px"{% endif %}>
+            {% if humidor.slot6 is not null %}
+                <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot6.image) }}">
+            {% endif %}</div>
+        <div id="slot7" class="slot" {% if humidor.slot7 is not null %}style="top:-191px"{% endif %}>
+            {% if humidor.slot7 is not null %}
+                <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot7.image) }}">
+            {% endif %}
+        </div>
+        <div id="slot8" class="slot" {% if humidor.slot8 is not null %}style="top:-191px"{% endif %}>
+            {% if humidor.slot8 is not null %}
+                <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot8.image) }}">
+            {% endif %}
+        </div>
     </div>
     <img id="vr-outer" src="{{ asset('images/humidor_page/humidor_edited.png') }}">
-    <div></div>
 </div>
+
+
+
+    <div id="cigarmodal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div>{{ dump(humidor) }}</div>
+
+
+
 {% endblock %}

@@ -36,18 +36,14 @@
 
 {% block body %}
     <div class="container">
-        <a href="{{ path('manufacturer_index') }}"><- Back to list</a>
+        <a href="{{ path('cigar_index') }}"><- Back to list</a>
 
         <div class="row">
-            <div class="col-md-6"><h2>New Manufacturer</h2></div>
+            <div class="col-md-6"><h2>Edit Cigar</h2></div>
         </div>
         {{ form_start(edit_form) }}
         {#<div class="col-md-2"></div>#}
             <div class="row">
-                <div class="col-md-6">
-                    {{ form_label(edit_form.name) }}
-                    {{ form_widget(edit_form.name) }}
-                </div>
                 <div class="col-md-6">
                     {{ form_label(edit_form.image) }}
                     {{ form_widget(edit_form.image) }}
@@ -60,6 +56,46 @@
                 </div>
                 <div class="col-md-3">
                     <img style="max-height:150px;" id="upload-image-holder" src="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_label(edit_form.gauge) }}
+                    {{ form_widget(edit_form.gauge) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label(edit_form.body) }}
+                    {{ form_widget(edit_form.body) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_label(edit_form.wrapperCountry) }}
+                    {{ form_widget(edit_form.wrapperCountry) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label(edit_form.variant) }}
+                    {{ form_widget(edit_form.variant) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_label(edit_form.fillerCountry) }}
+                    {{ form_widget(edit_form.fillerCountry) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label(edit_form.manufacturer) }}
+                    {{ form_widget(edit_form.manufacturer) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_label(edit_form.wrapper) }}
+                    {{ form_widget(edit_form.wrapper) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label(edit_form.shape) }}
+                    {{ form_widget(edit_form.shape) }}
                 </div>
             </div>
             <button type="submit" class="btn success" style="margin-top:10px;">Create</button>

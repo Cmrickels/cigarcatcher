@@ -5,19 +5,86 @@
 {% endblock %}
 
 {% block body %}
-    <nav class="navbar navbar-inverse" id="main-nav">
-        <div class="container-fluid" ng-app="firstApplication">
-            <ul class="nav navbar-nav" ng-controller="autoCompleteController as ctrl">
-                <li class="">
-                    <select id="cigar-selector" style="width:100px;"></select>
-                    {#<input id="cigar-selector" class="input-xlarge" name="optionvalue" data-placeholder="Choose An Option.." />#}
-                </li>
-                <li></li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
-            </ul>
-        </div>
+    <style>
+        body{
+            padding: 0;
+            margin:0;
+        }
+        #cigar-index-search{
+            border-radius:50px;
+            margin-top:17px;
+            font-size:22px;
+            border:none;
+        }
+        #main-nav{
+            /*height:75px;*/
+        }
+        /*#search-field{*/
+            /*width:200px;*/
+            /*border-radius:5px;*/
+            /*margin-top:10px;*/
+            /*border:none;*/
+            /*font-size:20px;*/
+            /*background-color:grey;*/
+            /*opacity:.5;*/
+            /*transition:opacity .5s, background-color .5s;*/
+            /*-webkit-transition:opacity .5s, background-color .5s;*/
+        /*}*/
+        /*#search-field:focus{*/
+            /*opacity:1.0;*/
+            /*background-color:white;*/
+        /*}*/
+
+        /*#search-field{*/
+            /*width:500px;*/
+
+        /*}*/
+
+        #search-dropdown{
+            background-color:white;
+            position:fixed;
+            font-size:15px;
+            margin-left: 10px;
+            box-shadow: black 1px 10px 54px;
+            margin-top:-250px;
+            z-index:11;
+            width:315px;
+            padding:10px;
+        }
+    </style>
+
+    {#<nav class="navbar navbar-inverse" id="main-nav">#}
+        {#<div class="container-fluid">#}
+            {#<ul class="nav navbar-nav nav-justified">#}
+                {#<li class="">#}
+                    {#<input type="text" id="search-field">#}
+                {#</li>#}
+                {#<li class=""></li>#}
+                {#<li class=""><a href="#">Page 2</a></li>#}
+                {#<li class=""><a href="#">Page 3</a></li>#}
+            {#</ul>#}
+        {#</div>#}
+    {#</nav>#}
+    {#<div class="col-md-3" id="search-dropdown" style="display:none"></div>#}
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <form class="navbar-form navbar-left">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="search-field">
+                        </div>
+                    </form>
+                    <li class="navbar-right"><a href="{{ path('list-humidors') }}">Humidors</a></li>
+                    <li class="navbar-right"><a href="#">Link</a></li>
+                    <li class="navbar-right"><a href="#">Link</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
     </nav>
+    <div id="search-dropdown" style="display:none"></div>
     {{ block('content') }}
 
 
@@ -25,24 +92,11 @@
 {% endblock %}
 
 {% block stylesheets %}
-<style>
-
-    body{
-        padding: 0;
-        margin:0;
-    }
-    #cigar-index-search{
-        border-radius:50px;
-        margin-top:17px;
-        font-size:22px;
-        border:none;
-    }
-    #main-nav{
-        height:75px;
-    }
-</style>
     {{ block('styles') }}
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+
+    </script>
 {% endblock %}

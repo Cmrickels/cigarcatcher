@@ -20,7 +20,12 @@ class CigarRepository extends EntityRepository
             ->setParameter('name', $params . '%');
         $result = $queryBuilder->getQuery()->getResult();
 
-        return $result;
+        if($result){
+            return $result;
+        }else{
+            return false;
+        }
+
     }
 
 

@@ -2,8 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Manufacturer;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
+use AppBundle\Entity\Wrapper;
+use AppBundle\Entity\Shape;
+
 
 /**
  * Cigar
@@ -19,6 +23,10 @@ class Cigar
      */
     public function onPrePersist(){
         $this->setName($this->getManufacturer()->getName() . " " . $this->getVariant());
+    }
+
+    public function __construct(){
+        $this->experiences = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -101,6 +109,11 @@ class Cigar
      * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Experience", mappedBy="cigar")
+     */
+    private $experiences;
 
     /**
      * Get id
@@ -191,7 +204,7 @@ class Cigar
      *
      * @return Cigar
      */
-    public function setManufacturer($manufacturer)
+    public function setManufacturer(Manufacturer $manufacturer)
     {
         $this->manufacturer = $manufacturer;
 
@@ -347,7 +360,7 @@ class Cigar
     /**
      * @return string
      */
-    public function getName()
+    public function getname()
     {
         return $this->name;
     }
@@ -355,9 +368,28 @@ class Cigar
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setname($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @param Experience $experience
+     * @return $this
+     */
+    public function addExperience(\AppBundle\Entity\Experience $experience)
+    {
+        $this->experiences[] = $experience;
+
+        return $this;
+    }
+
+    /**
+     * @param Experience $experience
+     */
+    public function removeExperience(\AppBundle\Entity\Experience $experience)
+    {
+        $this->experiences->removeElement($experience);
     }
 
 

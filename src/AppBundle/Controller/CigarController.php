@@ -6,7 +6,9 @@ use AppBundle\Entity\Cigar;
 use AppBundle\Form\CigarType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Cigar controller.
@@ -50,7 +52,7 @@ class CigarController extends Controller
             $file = $cigar->getImage();
 
             // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
 
             // Move the file to the directory where brochures are stored
             $file->move(
@@ -106,7 +108,7 @@ class CigarController extends Controller
             $file = $cigar->getImage();
 
             // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
 
             // Move the file to the directory where brochures are stored
             $file->move(
@@ -160,8 +162,7 @@ class CigarController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('cigar_delete', array('id' => $cigar->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-            ;
+            ->getForm();
     }
 
     /**
@@ -169,25 +170,12 @@ class CigarController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/delete/{id}", name="cigar_index_delete")
      */
-    public function deleteIndexAction(Cigar $cigar){
+    public function deleteIndexAction(Cigar $cigar)
+    {
         $em = $this->getDoctrine()->getManager();
         $em->remove($cigar);
         $em->flush();
         unlink('uploads/cigar/' . $cigar->getImage());
         return $this->redirectToRoute('cigar_index');
-    }
-
-    ///////////////////////////////
-    //  The following Functions
-    //  are Ajax callables
-    //////////////////////////////
-
-    /**
-     * @param Request $request
-     * @Route("/caq", name="cigar-auto-query")
-     */
-    public function getCigarsViaQueryAction(Request $request){
-        $params = $request->request('q');
-        $this->navCigarSearch($params);
     }
 }
