@@ -1,0 +1,44 @@
+{% extends 'admin-base.html.twig' %}
+
+{% block title %}
+    Pending Experiences
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for experience in experiences %}
+        <tr>
+            <td>{{ experience.user }}</td>
+            <td>{{ experience.description }}</td>
+            <td>{{ experience.status }}</td>
+            <td>
+                {% if experience.status == 'pending' %}
+                    <button class="btn btn-primary">Approve/Publish</button>
+                {% endif %}
+
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

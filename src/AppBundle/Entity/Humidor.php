@@ -153,7 +153,7 @@ class Humidor
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="slot1Age", type="datetime", nullable=true)
+     * @ORM\Column(name="slot1Age", type="integer", nullable=true)
      */
     private $slot1Age;
 
@@ -205,18 +205,22 @@ class Humidor
      * @ORM\Column(name="slot8Age", type="datetime", nullable=true)
      */
     private $slot8Age;
+
     /**
      * @ORM\PostLoad
      */
     public function setAllAges()
     {
-        //if (loop through all filled cigars) cigar is filled then subtracttime added form current time, convert and round days and display
+
         if($this->getSlot1() != null)
         {
-            $created = $this->getSlot1TimeAdded();
-            $now = new DateTime();
             if($this->getSlot1TimeAdded() != null){
-                $this->setSlot1Age($created->diff($now));
+                $created = strtotime($this->getSlot1TimeAdded()->format('Y-m-d H:i:s'));
+                $now = strtotime(date('Y-m-d H:i:s'));
+                $difference = $now - $created;
+                $differenceDisplay = $difference / 86400;
+                $this->setSlot1Age((int)$differenceDisplay);
+
             }
         }
     }

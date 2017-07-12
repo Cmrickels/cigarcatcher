@@ -21,6 +21,9 @@ class HumidorController extends Controller
     public function showHumidorAction($humidorId){
         $user = $this->getUser();
         $selectedHumidor = $this->getDoctrine()->getManager()->getRepository('AppBundle:Humidor')->find($humidorId);
+//        $em = $this->getDoctrine()->getManager();
+//        $query = $em->createQuery('SELECT c, m, w, s  FROM AppBundle:Cigar c JOIN c.manufacturer m JOIN c.wrapper w JOIN c.shape s WHERE c.id = :cigarid ');
+//        $query->setParameter('cigarid', $humidorId)->setMaxResults(3);
         return $this->render('AppBundle:Humidor:show-humidor.html.twig', array('user'=> $user, 'humidor'=>$selectedHumidor));
     }
 

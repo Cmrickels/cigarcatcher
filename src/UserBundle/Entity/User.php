@@ -26,10 +26,16 @@ class User extends BaseUser
      */
     protected $humidors;
 
+    /**
+     * @var@ORM\OneToMany(targetEntity="AppBundle\Entity\Experience", mappedBy="user", cascade={"persist"})
+     */
+    protected $experiences;
+
     public function __construct()
     {
         parent::__construct();
         $this->humidors = new ArrayCollection();
+        $this->experiences = new ArrayCollection();
 
         $humidor = new Humidor();
         $this->addHumidors($humidor);
@@ -68,6 +74,23 @@ class User extends BaseUser
     {
         $this->humidors[] = $humidors;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getExperiences()
+    {
+        return $this->experiences;
+    }
+
+    /**
+     * @param mixed $experiences
+     */
+    public function addExperiences($experience)
+    {
+        $this->experiences[] = $experience;
+    }
+
 
 
 }

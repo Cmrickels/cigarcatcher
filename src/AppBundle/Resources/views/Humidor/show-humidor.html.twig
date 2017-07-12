@@ -46,6 +46,20 @@
             padding:0;
             height:390px;
         }
+        .slot-filled{
+            top:-191px;
+            cursor:pointer;
+            box-shadow:0 0 0 black;
+            -webkit-box-shadow:0 0 0 black;
+            -webkit-transition: box-shadow .5s; /* For Safari 3.1 to 6.0 */
+        }
+        .slot-filled:hover{
+            box-shadow:0 15px 70px 5px black;
+            -webkit-box-shadow:0 15px 70px 5px black;
+        }
+
+
+
         .ddelem{
             margin: 5px 0;
         }
@@ -83,6 +97,8 @@
             });
         });
 
+        var selected_cigar_id;
+
         function initDroppables(){
             $('.slot').droppable({
                 drop: function(event, ui) {
@@ -93,7 +109,6 @@
                     $(this).droppable('disable');
                     ui.draggable.position( { of: $('#'+ slotNumber), my: 'left top', at: 'left top' } );
                     ui.draggable.draggable( 'option', 'revert', false );
-//                    console.log($('#'+slotNumber));
                     $.ajax({
                         method: "GET",
                         url: "{{  path('attach-cigar-to-slot') }}",
@@ -154,6 +169,63 @@
             var h_left = h_offset.left;   //our humidors offset from left of screen
             $('#droppable-zone').css("left", h_left + 65 + 'px');  //make sure our droppable zone has same offset with proper tweaking
         }
+
+        function setModal(cigarId, age, name, body, description, fillerCountry){
+            selected_cigar_id = cigarId;
+
+            $('#aged-days').html(age);
+            $('#name').html(name);
+            $('#description').html(description);
+            $('#filler').html(fillerCountry);
+            $('#body').html(body);
+
+            $.ajax({
+                url:"{{ path('get-cigar-info') }}",
+                data: { id: cigarId },
+                success: function(data){
+                    $('#wrapper-name').html(data.wrapperName);
+                    $('#wrapper-color').html(data.wrapperColor);
+                    $('#wrapper-country').html(data.wrapperCountry);
+                    $('#manufacturer-name').html(data.manufacturerName);
+                    $('#manufacturer-description').html(data.manufacturerDescription);
+                    $('#shape-type').html(data.shapeName);
+                }
+            })
+        }
+
+        function reactionModal(){
+            $("#reaction-modal").modal("show");
+            $("#experiences-click").click();
+            $.ajax({
+                type: "GET",
+                url: "{{ path('get-experience') }}",
+                data: {cigar_id: selected_cigar_id},
+                success: function(data){
+                    var archive = $('#experience-archive');
+                    archive.empty();
+                    if(data.length > 5){
+                        archive.css('overflow','scroll');
+                    }
+                    for(var i = 0; i< data.length; i++)
+                    {
+                        archive.append('<div><h5>'+data[i].submittedBy+'</h5><p>'+data[i].description+'</p></div><hr style="margin-top:10px;">');
+                    }
+                }
+            });
+        }
+
+        function submitExperience(id){
+            if($('#experience-text').val() != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('add-experience') }}",
+                    data: {experience: $('#experience-text').val(), cigar_id: selected_cigar_id},
+                    success: function (data) {
+
+                    }
+                });
+            }
+        }
     </script>
 
 {% endblock %}
@@ -163,30 +235,30 @@
     {#<div id="vr-outer"></div>#}
     <div id="droppable-zone">
         {% if humidor.slot1 is not null %}
-        <div id="slot1" class="slot" style="top:-191px;cursor:pointer" data-toggle="modal" data-target="#cigarmodal">
-            <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot1.image) }}">
-        </div>
+            <div id="slot1" class="slot slot-filled" data-toggle="modal" data-target="#cigar-modal" onmousedown="setModal({{ humidor.slot1.id }},'{{ humidor.slot1Age }}', '{{ humidor.slot1.name }}', '{{ humidor.slot1.body }}', '{{ humidor.slot1.description }}', '{{ humidor.slot1.fillerCountry }}')">
+                <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot1.image) }}">
+            </div>
         {% else %}
             <div id="slot1" class="slot"></div>
         {% endif %}
         {% if humidor.slot2 is not null %}
-        <div id="slot2" class="slot" style="top:-191px">
-            <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot2.image) }}">
-        </div>
+            <div id="slot2" class="slot slot-filled"  data-toggle="modal" data-target="#cigar-modal" onmousedown="setModal({{ humidor.slot2.id }},'{{ humidor.slot2Age }}', '{{ humidor.slot2.name }}', '{{ humidor.slot2.body }}', '{{ humidor.slot2.description }}', '{{ humidor.slot2.fillerCountry }}')">
+                <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot2.image) }}">
+            </div>
         {% else %}
             <div id="slot2" class="slot"></div>
         {% endif %}
         {% if humidor.slot3 is not null %}
-        <div id="slot3" class="slot" style="top:-191px">
-            <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot3.image) }}">
-        </div>
+            <div id="slot3" class="slot slot-filled" data-toggle="modal" data-target="#cigar-modal" onmousedown="setModal({{ humidor.slot3.id }},'{{ humidor.slot3Age }}', '{{ humidor.slot3.name }}', '{{ humidor.slot3.body }}', '{{ humidor.slot3.description }}', '{{ humidor.slot3.fillerCountry }}')">
+                <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot3.image) }}">
+            </div>
         {% else %}
             <div id="slot3" class="slot"></div>
         {% endif %}
         {% if humidor.slot4 is not null %}
-        <div id="slot4" class="slot" style="top:-191px">
-            <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot4.image) }}">
-        </div>
+            <div id="slot4" class="slot slot-filled" data-toggle="modal" data-target="#cigar-modal" onmousedown="setModal({{ humidor.slot4.id }},'{{ humidor.slot4Age }}', '{{ humidor.slot4.name }}', '{{ humidor.slot4.body }}', '{{ humidor.slot4.description }}', '{{ humidor.slot4.fillerCountry }}')">
+                <img style='width:100%;height:100%;' src="{{ asset('uploads/cigar/' ~ humidor.slot4.image) }}">
+            </div>
         {% else %}
             <div id="slot4" class="slot"></div>
         {% endif %}
@@ -213,29 +285,64 @@
     <img id="vr-outer" src="{{ asset('images/humidor_page/humidor_edited.png') }}">
 </div>
 
-
-
-    <div id="cigarmodal" class="modal fade" role="dialog">
+    <!-- cigar modal -->
+    <div id="cigar-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 class="modal-title"><span id="name"></span></h4>
                 </div>
                 <div class="modal-body">
+                    <p><b>Aged: </b><i><span id="aged-days"></span>days</i></p>
+                    <p><b>Body: </b><span id="body"></span></p>
+                    <p><b>Wrapper Name: </b><span id="wrapper-name"></span></p>
+                    <p><b>Wrapper Color: </b><span id="wrapper-color"></span></p>
+                    <p><b>Manufacturer Name: </b><span id="manufacturer-name"></span></p>
+                    <p><b>Manufacturer Description: </b><span id="manufacturer-description"></span></p>
+                    <p><b>Shape Type: </b><span id="shape-type"></span></p>
+
+                    <p><b>Description: </b><span id="description"></span></p>
+                    <p><b>Filler Country: </b><span id="filler"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" onclick="reactionModal()">Reaction</button>
                 </div>
             </div>
 
         </div>
     </div>
-
-    <div>{{ dump(humidor) }}</div>
-
-
+    <!-- reaction modal -->
+    <div id="reaction-modal" class="modal fade" role="dialog" style="max-height:650px;overflow:scroll">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <ul class="nav nav-tabs">
+                        <li><a data-toggle="tab" id="experiences-click" href="#experiences">Experiences</a></li>
+                        <li class="active"><a data-toggle="tab" href="#newexperience">New Experience</a></li>
+                    </ul>
+                </div>
+                <div class="modal-body" style="max-height:500px;overflow:scroll;">
+                    <div class="tab-content">
+                        <div id="experiences" class="tab-pane fade in active">
+                            <div id="experience-archive"></div>
+                        </div>
+                        <div id="newexperience" class="tab-pane fade in active">
+                            <h6>Your Experience</h6>
+                            <textarea id="experience-text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="submitExperience()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

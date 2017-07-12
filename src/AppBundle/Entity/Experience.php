@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
  * Experience
@@ -33,6 +34,24 @@ class Experience
      * @ORM\JoinColumn(name="cigar_id", referencedColumnName="id")
      */
     private $cigar;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="experiences")
+     * @ORM\JoinColumn(name="experience", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @var string
+     * @ORM\Column(name="status", type="string", length=255, nullable=true)
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(name="submissionDate", type="datetime", nullable=true )
+     */
+    private $submissionDate;
+
 
     /**
      * Get id
@@ -84,6 +103,53 @@ class Experience
         $this->cigar = $cigar;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubmissionDate()
+    {
+        return $this->submissionDate;
+    }
+
+    /**
+     * @param mixed $submissionDate
+     */
+    public function setSubmissionDate($submissionDate)
+    {
+        $this->submissionDate = $submissionDate;
+    }
 
 }
 
