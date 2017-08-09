@@ -52,6 +52,19 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-md-6">
+                {{ form_label(form.gauge) }}
+                {{ form_widget(form.gauge) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.length) }}
+                {{ form_widget(form.length) }}
+            </div>
+            <div class="col-md-6">
+                <img style="max-height:150px;" id="upload-image-holder" src="">
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-9">
                 {{ form_label(form.description) }}
                 {{ form_widget(form.description) }}

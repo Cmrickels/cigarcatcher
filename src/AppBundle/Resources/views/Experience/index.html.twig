@@ -16,29 +16,32 @@
 {% endblock %}
 
 {% block body %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>User</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for experience in experiences %}
-        <tr>
-            <td>{{ experience.user }}</td>
-            <td>{{ experience.description }}</td>
-            <td>{{ experience.status }}</td>
-            <td>
-                {% if experience.status == 'pending' %}
-                    <button class="btn btn-primary">Approve/Publish</button>
-                {% endif %}
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>User</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for experience in experiences %}
+            <tr>
+                <td>{{ experience.user }}</td>
+                <td>{{ experience.description }}</td>
+                <td>{{ experience.status }}</td>
+                <td>
+                    {% if experience.status == 'pending' %}
+                        <a class="btn btn-primary" href="{{ path('approve-experience', {id: experience.id, status: 'publish' }) }}">Approve/Publish</a>
 
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                    {% endif %}
+                    <a class="btn btn-danger" href="{{ path('approve-experience', {id: experience.id, status: 'erase' }) }}">Erase</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

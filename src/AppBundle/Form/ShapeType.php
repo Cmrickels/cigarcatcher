@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,8 +19,10 @@ class ShapeType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
-            ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control tinymce'), 'required' => true))
-            ->add('image', FileType::class, array('attr' => array('class' => 'form-control'), 'required' => true, 'data_class' => null));
+            ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control '), 'required' => true))
+            ->add('image', FileType::class, array('attr' => array('class' => 'form-control'), 'required' => true, 'data_class' => null))
+            ->add('gauge', TextType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
+            ->add('length', TextType::class, array('attr' => array('class' => 'form-control'), 'required' => true));
     }
     
     /**

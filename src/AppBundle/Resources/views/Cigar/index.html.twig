@@ -27,7 +27,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Gauge</th>
+                    <th>Name</th>
                     <th>Body</th>
                     <th>Wrapper Country</th>
                     <th>Version</th>
@@ -35,7 +35,7 @@
                     <th>Filler Country</th>
                     <th>Manufacturer</th>
                     <th>Wrapper Type</th>
-                    <th>Shape Type</th>
+                    <th>Shapes</th>
                     <th>Image</th>
                 </tr>
             </thead>
@@ -43,7 +43,7 @@
                 {% for cigar in cigars %}
                     <tr>
                         <td>{{ cigar.id }}</td>
-                        <td>{{ cigar.gauge }}</td>
+                        <td>{{ cigar.name }}</td>
                         <td>{{ cigar.body }}</td>
                         <td>{{ cigar.wrapperCountry }}</td>
                         <td>{{ cigar.variant }}</td>
@@ -51,7 +51,7 @@
                         <td>{{ cigar.fillerCountry }}</td>
                         <td>{{ cigar.manufacturer.name }}</td>
                         <td>{{ cigar.wrapper.name }}</td>
-                        <td>{{ cigar.shape.name }}</td>
+                        <td>{% for shape in cigar.shapes %}{{ shape.name }} {% endfor %}</td>
                         <td><img style="max-height:150px;" src="{{ asset('uploads/cigar/' ~ cigar.image) }}"></td>
                         <td><a href="{{ path('cigar_index_delete', {'id' : cigar.id}) }}" class="btn btn-danger">Delete</a></td>
                         <td><a href="{{ path('cigar_edit', {'id' : cigar.id} ) }}" class="btn btn-default">Edit</a></td>

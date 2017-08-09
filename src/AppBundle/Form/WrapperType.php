@@ -18,7 +18,8 @@ class WrapperType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
-            ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control tinymce'), 'required' => true))
+            ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
+//            ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control tinymce'), 'required' => true))
             ->add('color', TextType::class, array('attr' => array('class' => 'form-control '), 'required' => true, 'data_class' => null));
     }
 

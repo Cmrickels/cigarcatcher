@@ -20,7 +20,6 @@ class CigarType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('gauge', NumberType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
             ->add('body', TextType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
             ->add('wrapperCountry', CountryType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
             ->add('variant', TextType::class, array('attr' => array('class' => 'form-control'), 'required' => true))
@@ -37,9 +36,11 @@ class CigarType extends AbstractType
                     'choice_label' => 'name'
                 )
             )
-            ->add('shape', EntityType::class, array('attr' => array('class' => 'form-control'), 'required' => true,
+            ->add('shapes', EntityType::class, array('attr' => array('class' => 'form-control'), 'required' => true,
                     'class' => 'AppBundle:Shape',
-                    'choice_label' => 'name'
+                    'choice_label' => 'name',
+                    'expanded' => true,
+                    'multiple' => true
                 )
             );
     }

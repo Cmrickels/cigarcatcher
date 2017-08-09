@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,7 +37,8 @@ class Shape
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="Cigar", mappedBy="shape")
+     * @ORM\ManyToMany(targetEntity="Cigar", mappedBy="shapes")
+     *
      */
     private $cigars;
 
@@ -45,6 +47,16 @@ class Shape
      *
      */
     private $image;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $gauge;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $length;
 
     /**
      * Get id
@@ -108,31 +120,17 @@ class Shape
      */
     public function __construct()
     {
-        $this->cigars = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cigars = new ArrayCollection();
     }
 
     /**
-     * Add cigar
-     *
-     * @param \AppBundle\Entity\Cigar $cigar
-     *
-     * @return Shape
+     * @param Cigar $cigars
+     * @return $this
      */
-    public function addCigar(\AppBundle\Entity\Cigar $cigar)
+    public function addCigars(\AppBundle\Entity\Cigar $cigars)
     {
-        $this->cigars[] = $cigar;
-
+        $this->cigars = $cigars;
         return $this;
-    }
-
-    /**
-     * Remove cigar
-     *
-     * @param \AppBundle\Entity\Cigar $cigar
-     */
-    public function removeCigar(\AppBundle\Entity\Cigar $cigar)
-    {
-        $this->cigars->removeElement($cigar);
     }
 
     /**
@@ -140,7 +138,7 @@ class Shape
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCigars()
+    public function getCigar()
     {
         return $this->cigars;
     }
@@ -159,5 +157,37 @@ class Shape
     public function setImage($image)
     {
         $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGauge()
+    {
+        return $this->gauge;
+    }
+
+    /**
+     * @param mixed $gauge
+     */
+    public function setGauge($gauge)
+    {
+        $this->gauge = $gauge;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param mixed $length
+     */
+    public function setLength($length)
+    {
+        $this->length = $length;
     }
 }

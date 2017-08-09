@@ -130,22 +130,8 @@
                 success: function(data){
                     $('#search-dropdown').empty();
                     if(data) {
-
                         for(var i = 0; i < data.length; i++) {
-
-                            var image = data[i].image;
-
-                            $('#search-dropdown').append(
-
-                                "<div id='"+ data[i].id +"' class='ddelem draggable' style='float:right'><img style='max-width:70px;' class='img-fluid' src='http://cigarcatcher.dev/uploads/cigar/" + data[i].image + "'></div>" +
-                                "<h4 class='ddelem'><span class=''>Name:</span> " + data[i].variant + "</h4>" +
-                                "<p class='ddelem'>Manufacturer: " + data[i].manufacturerName + "</p>" +
-                                "<p class='ddelem'>Body: " + data[i].body + "</p>" +
-                                "<p class='ddelem'>Wrapper: " + data[i].wrapperName + "</p>" +
-                                "<p class='ddelem'>Shape: " + data[i].shapeName + "</p>" +
-                                "<p class='ddelem'>Description: " + data[i].description + "</p>"
-
-                            ).slideDown(100);
+                            $('#search-dropdown').append(data[i]).slideDown(100);
                             $('.draggable').draggable({
                                 cursor: 'move',
                                 containment: 'document',
@@ -172,7 +158,8 @@
 
         function setModal(cigarId, age, name, body, description, fillerCountry){
             selected_cigar_id = cigarId;
-
+            var target = document.getElementById('cigar-modal');
+            var spinner = new Spinner(opts).spin(target);
             $('#aged-days').html(age);
             $('#name').html(name);
             $('#description').html(description);
@@ -189,6 +176,7 @@
                     $('#manufacturer-name').html(data.manufacturerName);
                     $('#manufacturer-description').html(data.manufacturerDescription);
                     $('#shape-type').html(data.shapeName);
+                    spinner.stop();
                 }
             })
         }
@@ -196,11 +184,14 @@
         function reactionModal(){
             $("#reaction-modal").modal("show");
             $("#experiences-click").click();
+            var target = document.getElementById('reaction-modal');
+            var spinner = new Spinner(opts).spin(target);
             $.ajax({
                 type: "GET",
                 url: "{{ path('get-experience') }}",
                 data: {cigar_id: selected_cigar_id},
                 success: function(data){
+                    spinner.stop();
                     var archive = $('#experience-archive');
                     archive.empty();
                     if(data.length > 5){
@@ -309,6 +300,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-info" data-dismiss="modal" onclick="reactionModal()">Reaction</button>
+
                 </div>
             </div>
 
@@ -326,7 +318,7 @@
                         <li class="active"><a data-toggle="tab" href="#newexperience">New Experience</a></li>
                     </ul>
                 </div>
-                <div class="modal-body" style="max-height:500px;overflow:scroll;">
+                <div class="modal-body" id="reaction-modal-body" style="height:500px;overflow:scroll;">
                     <div class="tab-content">
                         <div id="experiences" class="tab-pane fade in active">
                             <div id="experience-archive"></div>

@@ -28,40 +28,27 @@ class CigarController extends Controller
 
             $repository = $em->getRepository('AppBundle:Cigar');
 
-            $query = $em->createQuery('SELECT c, m, w, s  FROM AppBundle:Cigar c JOIN c.manufacturer m JOIN c.wrapper w JOIN c.shape s WHERE (c.variant LIKE :search OR c.name LIKE :search)');
+            $query = $em->createQuery('SELECT c, m, w, s  FROM AppBundle:Cigar c JOIN c.manufacturer m JOIN c.wrapper w JOIN c.shapes s WHERE (c.variant LIKE :search OR c.name LIKE :search)');
             $query->setParameter('search', '%'.$search_string.'%')->setMaxResults(3);
             $results = $query->getResult();
 
-            $cigar = array();
-
+            $htmls = [];
             foreach($results as $result){
-                $cigars[] = array(
-                    'id' => $result->getId(),
-                    'gauge' => $result->getGauge(),
-                    'body' => $result->getBody(),
-                    'wrapperCountry' => $result->getWrapperCountry(),
-                    'variant' => $result->getVariant(),
-                    'description' => $result->getDescription(),
-                    'fillerCountry' => $result->getFillerCountry(),
-                    'name' => $result->getName(),
-                    'image' => $result->getImage(),
-                    'manufacturerId' => $result->getManufacturer()->getId(),
-                    'manufacturerName' => $result->getManufacturer()->getName(),
-                    'manufacturerDescription' => $result->getManufacturer()->getDescription(),
-                    'manufacturerImage' => $result->getManufacturer()->getImage(),
-                    'wrapperId' => $result->getWrapper()->getId(),
-                    'wrapperName' => $result->getWrapper()->getName(),
-                    'wrapperDescription' => $result->getWrapper()->getDescription(),
-                    'wrapperColor' => $result->getWrapper()->getColor(),
-                    'shapeId' => $result->getShape()->getId(),
-                    'shapeName' => $result->getShape()->getName(),
-                    'shapeDescription' => $result->getShape()->getDescription(),
-                    'shapeImage' => $result->getShape()->getImage(),
-                );
+                $shapes = $result->getShapes();
+                $shapeNames = [];
+                $shapeDescriptions = [];
+                $shapeImages = [];
+                foreach($shapes as $shape){
+                    $shapeNames [] = $shape->getName();
+                    $shapeDescriptions [] = $shape->getDescription();
+                    $shapeImages [] = $shape->getImage();
+                }
+
+                $htmls[] = "<div id=". $result->getId() ." class='ddelem draggable' style='float:right'><img style='max-width:70px;' class='img-fluid' src='http://cigarcatcher.dev/uploads/cigar/" . $result->getImage() . "'></div><h4 class='ddelem'><span class=''>Name:</span>" . $result->getVariant() ."</h4><p class='ddelem'>Manufacturer: " . $result->getManufacturer()->getName() . "</p><p class='ddelem'>Body: " . $result->getBody() . "</p><p class='ddelem'>Wrapper: " . $result->getWrapper()->getName() . "</p><p class='ddelem'>Description: " . $result->getDescription() ."</p>";
             }
 
-            if (!empty($cigars)) {
-                return new JsonResponse($cigars);
+            if (!empty($htmls)) {
+                return new JsonResponse($htmls);
             } else {
                 return new JsonResponse(false);
             }
@@ -88,7 +75,6 @@ class CigarController extends Controller
 
         $response = new JsonResponse(array(
             'id'=> $results[0]->getId(),
-            'gauge'=> $results[0]->getBody(),
             'body'=> $results[0]->getWrapperCountry(),
             'variant' => $results[0]->getVariant(),
             'description'=> $results[0]->getDescription(),
@@ -100,7 +86,7 @@ class CigarController extends Controller
             'wrapperName'=> $results[0]->getWrapper()->getName(),
             'wrapperDescription'=> $results[0]->getWrapper()->getDescription(),
             'wrapperColor'=> $results[0]->getWrapper()->getColor(),
-            'shapeId'=> $results[0]->getShape()->getId(),
+            'shapeId'=> $results[0]->getShapes()->getId(),
             'shapeName'=> $results[0]->getShape()->getName(),
             'shapeDescription'=> $results[0]->getShape()->getDescription()
         ));

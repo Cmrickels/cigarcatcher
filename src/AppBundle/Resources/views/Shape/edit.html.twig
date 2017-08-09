@@ -55,10 +55,20 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
+                    {{ form_label(edit_form.gauge) }}
+                    {{ form_widget(edit_form.gauge) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label(edit_form.length) }}
+                    {{ form_widget(edit_form.length) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     {{ form_label(edit_form.description) }}
                     {{ form_widget(edit_form.description) }}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <img style="max-height:150px;" id="upload-image-holder" src="">
                 </div>
             <button type="submit" class="btn success" style="margin-top:10px;">Create</button>

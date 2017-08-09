@@ -27,6 +27,7 @@ class Cigar
 
     public function __construct(){
         $this->experiences = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->shapes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -37,13 +38,6 @@ class Cigar
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="gauge", type="integer")
-     */
-    private $gauge;
 
     /**
      * @var string
@@ -93,10 +87,10 @@ class Cigar
     private $wrapper;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Shape", inversedBy="cigars")
-     * @JoinColumn(name="shape_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Shape", inversedBy="cigars")
+     * @ORM\JoinTable(name="cigar_shapes")
      */
-    private $shape;
+    private $shapes;
 
     /**
      * @ORM\Column(type="string")
@@ -123,30 +117,6 @@ class Cigar
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set gauge
-     *
-     * @param integer $gauge
-     *
-     * @return Cigar
-     */
-    public function setGauge($gauge)
-    {
-        $this->gauge = $gauge;
-
-        return $this;
-    }
-
-    /**
-     * Get gauge
-     *
-     * @return int
-     */
-    public function getGauge()
-    {
-        return $this->gauge;
     }
 
     /**
@@ -318,15 +288,12 @@ class Cigar
     }
 
     /**
-     * Set shape
-     *
-     * @param \AppBundle\Entity\Shape $shape
-     *
-     * @return Cigar
+     * @param \AppBundle\Entity\Shape|null $shapes
+     * @return $this
      */
-    public function setShape(\AppBundle\Entity\Shape $shape = null)
+    public function addShapes(\AppBundle\Entity\Shape $shapes = null)
     {
-        $this->shape = $shape;
+        $this->shapes[] = $shapes;
 
         return $this;
     }
@@ -336,9 +303,9 @@ class Cigar
      *
      * @return \AppBundle\Entity\Shape
      */
-    public function getShape()
+    public function getShapes()
     {
-        return $this->shape;
+        return $this->shapes;
     }
 
     /**
