@@ -34,6 +34,13 @@ class Humidor
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", nullable=true)
+     */
+    private $description;
+
+    /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="humidors")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -658,5 +665,24 @@ class Humidor
     {
         $this->slot8Age = $slot8Age;
     }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+
 }
+
 

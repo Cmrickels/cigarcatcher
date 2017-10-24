@@ -36,11 +36,24 @@
 
 {% block javascripts %}
     <script>
-        function createHumidor(hn){
+        function createHumidor(hn, hd){
             $.ajax({
                 method: "GET",
                 url: "{{ path('create-humidor') }}",
-                data: {humidorName : hn},
+                data: {humidorName : hn, humidorDescription: hd},
+                success: function(data) {
+                    if(data == 'success'){
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        function editHumidor(hn, hd, id){
+            $.ajax({
+                method: "GET",
+                url: "{{ path('edit-humidor') }}",
+                data: {humidorName : hn, humidorDescription: hd, humidorId: id},
                 success: function(data) {
                     if(data == 'success'){
                         window.location.reload();
@@ -67,10 +80,10 @@
                     <h2 class="mdl-card__title-text">{% if humidor.name is not null and humidor.name != '' %}{{ humidor.name }}{% else %}Unnamed{% endif %}</h2>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    Description about your unique and respected box of cigars from their first taste to the wrapper's undernotes
+                    {{ humidor.description }}
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                    <a data-toggle="modal" onclick="$('#humidor-id').val({{ humidor.id }})" data-target="#editModal" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                         Edit
                     </a>
                 </div>
@@ -100,13 +113,45 @@
                         <input type="text" class="form-control" id="humidor-name">
                     </div>
                 </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="humidor-description">Humidor Description:</label>
+                        <textarea class="form-control" id="humidor-description"></textarea>
+                    </div>
+                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="createHumidor($('#humidor-name').val())">Create</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="createHumidor($('#humidor-name').val(), $('#humidor-description').val())">Create</button>
                 </div>
             </div>
 
         </div>
     </div>
 
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="edit-humidor-name">Humidor Name:</label>
+                        <input type="text" class="form-control" id="edit-humidor-name">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="edit-humidor-description">Humidor Description:</label>
+                        <textarea class="form-control" id="edit-humidor-description"></textarea>
+                    </div>
+                </div>
+                <input type="hidden" value="" id="humidor-id">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" data-dismiss="modal" onclick="editHumidor($('#edit-humidor-name').val(), $('#edit-humidor-description').val(), $('#humidor-id').val())">Edit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 {% endblock %}

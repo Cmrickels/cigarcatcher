@@ -69,7 +69,7 @@ class CigarController extends Controller
 
         $repository = $em->getRepository('AppBundle:Cigar');
 
-        $query = $em->createQuery('SELECT c, m, w, s  FROM AppBundle:Cigar c JOIN c.manufacturer m JOIN c.wrapper w JOIN c.shape s WHERE c.id = :id');
+        $query = $em->createQuery('SELECT c, m, w  FROM AppBundle:Cigar c JOIN c.manufacturer m JOIN c.wrapper w WHERE c.id = :id');
         $query->setParameter('id', $cigarId );
         $results = $query->getResult();
 
@@ -85,10 +85,7 @@ class CigarController extends Controller
             'wrapperId'=> $results[0]->getWrapper()->getId(),
             'wrapperName'=> $results[0]->getWrapper()->getName(),
             'wrapperDescription'=> $results[0]->getWrapper()->getDescription(),
-            'wrapperColor'=> $results[0]->getWrapper()->getColor(),
-            'shapeId'=> $results[0]->getShapes()->getId(),
-            'shapeName'=> $results[0]->getShape()->getName(),
-            'shapeDescription'=> $results[0]->getShape()->getDescription()
+            'wrapperColor'=> $results[0]->getWrapper()->getColor()
         ));
         return $response;
     }

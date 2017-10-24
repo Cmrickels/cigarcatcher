@@ -80,9 +80,11 @@ class HumidorController extends Controller
      */
     public function createHumidorAction(Request $request){
         $humidorName = $request->query->get('humidorName');
+        $humidorDescription = $request->query->get('humidorDescription');
 
         $humidor = new Humidor();
         $humidor->setName($humidorName);
+        $humidor->setDescription($humidorDescription);
 
         $user = $this->getUser();
         $user->addHumidors($humidor);
@@ -99,5 +101,27 @@ class HumidorController extends Controller
 
     }
 
+    /**
+     * @Route("/editHumidor", name="edit-humidor")
+     */
+    public function editHumidorAction(Request $request){
+        $humidorName = $request->query->get('humidorName');
+        $humidorDescription = $request->query->get('humidorDescription');
+        $humidorId = $request->query->get('humidorId');
+
+        $em = $this->getDoctrine()->getManager();
+        $humidor = $em->getRepository('AppBundle:Humidor')->findOneById($humidorId);
+        $humidor->setName($humidorName);
+        $humidor->setDescription($humidorDescription);
+
+        $em->persist($humidor);
+        try{
+            $em->flush($humidor);
+            return JsonResponse::create("success");
+        }catch(\Exception $e){
+            return JsonResponse::create($e->getMessage());
+        }
+
+    }
 
 }
